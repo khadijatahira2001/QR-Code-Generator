@@ -1,84 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Generator</title>
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
     <script>
-        function toggleInputFields() {
-            const textData = document.getElementById('text-data');
-            const imageUpload = document.getElementById('image-upload');
-            const pdfUpload = document.getElementById('pdf-upload');
+      function toggleInputFields() {
+        const textData = document.getElementById("text-data");
+        const imageUpload = document.getElementById("image-upload");
+        const pdfUpload = document.getElementById("pdf-upload");
 
-            const selectedOption = document.querySelector('input[name="option"]:checked').value;
+        const selectedOption = document.querySelector(
+          'input[name="option"]:checked'
+        ).value;
 
-            textData.style.display = selectedOption === 'text' ? 'block' : 'none';
-            imageUpload.style.display = selectedOption === 'image' ? 'block' : 'none';
-            pdfUpload.style.display = selectedOption === 'pdf' ? 'block' : 'none';
-        }
+        textData.style.display = selectedOption === "text" ? "block" : "none";
+        imageUpload.style.display =
+          selectedOption === "image" ? "block" : "none";
+        pdfUpload.style.display = selectedOption === "pdf" ? "block" : "none";
+      }
 
-        window.onload = toggleInputFields;
+      window.onload = toggleInputFields;
     </script>
-</head>
+  </head>
 
-<body class="bg-gray-100" >
+  <body class="bg-gray-100">
     <header class="bg-white text-gray-600 body-font">
-        <div class="container mx-auto flex justify-between flex-wrap p-5 flex-col md:flex-row items-center">
-          <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-            <span class="ml-3 text-xl">QR CODE GENERATOR</span>
-          </a>
-       
-          <button class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-900 inline-flex items-center border-0 focus:outline-none  text-base mt-4 md:mt-0">Generate
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-              
-            </svg>
-          </button>
-        </div>
-      </header>
-      <div class=" flex items-center justify-center h-screen m-0 mt-12">
-        <div class="bg-white mt-28 mb-28 p-8 rounded-lg shadow-md text-center max-w-md w-full">
-            <h1 class="text-2xl mb-5">QR Code Generator</h1>
-            <form method="post" enctype="multipart/form-data">
-                <div class="mb-5">
-                    <label class="block mb-2">Select Data Type:</label>
-                    <div class="flex justify-center mb-4">
-                        <label class="mr-4">
-                            <input type="radio" name="option" value="text" class="mr-1" checked onchange="toggleInputFields()"> Text Data
-                        </label>
-                        <label class="mr-4">
-                            <input type="radio" name="option" value="image" class="mr-1" onchange="toggleInputFields()"> Image Upload
-                        </label>
-                        <label>
-                            <input type="radio" name="option" value="pdf" class="mr-1" onchange="toggleInputFields()"> PDF Upload
-                        </label>
-                    </div>
-                    <div id="text-data" class="mb-5">
-                        <label class="block mb-2" for="data">Enter Text Data:</label>
-                        <input type="text" id="data" name="data" class="block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter text or URL">
-                    </div>
-                    <div id="image-upload" class="mb-5" style="display: none;">
-                        <label class="block mb-2" for="image">Upload Image:</label>
-                        <input type="file" id="image" name="image" class="block w-full px-3 py-2 border border-gray-300 rounded-md">
-                    </div>
-                    <div id="pdf-upload" class="mb-5" style="display: none;">
-                        <label class="block mb-2" for="pdf">Upload PDF:</label>
-                        <input type="file" id="pdf" name="pdf" class="block w-full px-3 py-2 border border-gray-300 rounded-md">
-                    </div>
-                </div>
-                <button type="submit" class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-900">Generate QR Code</button>
-            </form>
-            {% if qr_code %}
-                <h2>Generated QR Code:</h2>
-                <img class="mt-5 mx-auto" src="{{ url_for('qrcode_file', filename=qr_code) }}" alt="QR Code">
-                <a href="{{ url_for('qrcode_file', filename=qr_code) }}" download class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-900 mt-5 inline-block">Download QR Code</a>
+      <div
+        class="container mx-auto flex justify-between flex-wrap p-5 flex-col md:flex-row items-center"
+      >
+        <a
+          class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+            ></path>
+          </svg>
+          <span class="ml-3 text-xl">QR CODE GENERATOR</span>
+        </a>
 
-            {% endif %}
-        </div>
-</div>
-</body>
+        <button
+          class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-900 inline-flex items-center border-0 focus:outline-none text-base mt-4 md:mt-0"
+        >
+          Generate
+          <svg
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            class="w-4 h-4 ml-1"
+            viewBox="0 0 24 24"
+          ></svg>
+        </button>
+      </div>
+    </header>
+    <div class="flex items-center justify-center h-screen m-0 mt-12">
+      <div
+        class="bg-white mt-28 mb-28 p-8 rounded-lg shadow-md text-center max-w-md w-full"
+      >
+        <h1 class="text-2xl mb-5">QR Code Generator</h1>
+        <form method="post" enctype="multipart/form-data">
+          <div class="mb-5">
+            <label class="block mb-2">Select Data Type:</label>
+            <div class="flex justify-center mb-4">
+              <label class="mr-4">
+                <input
+                  type="radio"
+                  name="option"
+                  value="text"
+                  class="mr-1"
+                  checked
+                  onchange="toggleInputFields()"
+                />
+                Text Data
+              </label>
+              <label class="mr-4">
+                <input
+                  type="radio"
+                  name="option"
+                  value="image"
+                  class="mr-1"
+                  onchange="toggleInputFields()"
+                />
+                Image Upload
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="option"
+                  value="pdf"
+                  class="mr-1"
+                  onchange="toggleInputFields()"
+                />
+                PDF Upload
+              </label>
+            </div>
+            <div id="text-data" class="mb-5">
+              <label class="block mb-2" for="data">Enter Text Data:</label>
+              <input
+                type="text"
+                id="data"
+                name="data"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="Enter text or URL"
+              />
+            </div>
+            <div id="image-upload" class="mb-5" style="display: none">
+              <label class="block mb-2" for="image">Upload Image:</label>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div id="pdf-upload" class="mb-5" style="display: none">
+              <label class="block mb-2" for="pdf">Upload PDF:</label>
+              <input
+                type="file"
+                id="pdf"
+                name="pdf"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-900"
+          >
+            Generate QR Code
+          </button>
+        </form>
+        {% if qr_code %}
+        <h2>Generated QR Code:</h2>
+        <img
+          class="mt-5 mx-auto"
+          src="{{ url_for('qrcode_file', filename=qr_code) }}"
+          alt="QR Code"
+        />
+        <a
+          href="{{ url_for('qrcode_file', filename=qr_code) }}"
+          download
+          class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-900 mt-5 inline-block"
+          >Download QR Code</a
+        >
+
+        {% endif %}
+      </div>
+    </div>
+  </body>
 </html>
